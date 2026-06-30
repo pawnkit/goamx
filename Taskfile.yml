@@ -1,0 +1,45 @@
+version: "3"
+
+vars:
+  GO: '{{.GO | default "go"}}'
+  GOFUMPT_VERSION: '{{.GOFUMPT_VERSION | default "v0.8.0"}}'
+  GOLANGCI_LINT_VERSION: '{{.GOLANGCI_LINT_VERSION | default "v2.1.6"}}'
+
+tasks:
+  fmt:
+    desc: Format Go files with gofumpt.
+    cmds:
+      - "{{.GO}} run mvdan.cc/gofumpt@{{.GOFUMPT_VERSION}} -w ."
+
+  fmt-check:
+    desc: Check Go files are formatted with gofumpt.
+    cmds:
+      - test -z "$({{.GO}} run mvdan.cc/gofumpt@{{.GOFUMPT_VERSION}} -l .)"
+
+  test:
+    desc: Run unit tests.
+    cmds:
+      - "{{.GO}} test ./..."
+
+  race:
+    desc: Run tests with the race detector.
+    cmds:
+      - "CGO_ENABLED=1 {{.GO}} test -race ./..."
+
+  vet:
+    desc: Run go vet.
+    cmds:
+      - "{{.GO}} vet ./..."
+
+  lint:
+    desc: Run golangci-lint.
+    cmds:
+      - "{{.GO}} run github.com/golangci/golangci-lint/v2/cmd/golangci-lint@{{.GOLANGCI_LINT_VERSION}} run"
+
+  check:
+    desc: Run formatting, test, vet, and race checks.
+    cmds:
+      - task: fmt-check
+      - task: test
+      - task: vet
+      - task: race
