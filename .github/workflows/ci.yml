@@ -30,7 +30,13 @@ jobs:
 
       - name: Check formatting
         shell: bash
-        run: test -z "$(go run mvdan.cc/gofumpt@v0.8.0 -l .)"
+        run: |
+          files="$(go run mvdan.cc/gofumpt@v0.8.0 -l .)"
+          if [ -n "$files" ]; then
+            echo "gofumpt would reformat:"
+            echo "$files"
+            exit 1
+          fi
 
       - name: Test
         run: go test ./...

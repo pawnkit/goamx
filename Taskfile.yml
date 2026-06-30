@@ -14,7 +14,13 @@ tasks:
   fmt-check:
     desc: Check Go files are formatted with gofumpt.
     cmds:
-      - test -z "$({{.GO}} run mvdan.cc/gofumpt@{{.GOFUMPT_VERSION}} -l .)"
+      - |
+        files="$({{.GO}} run mvdan.cc/gofumpt@{{.GOFUMPT_VERSION}} -l .)"
+        if [ -n "$files" ]; then
+          echo "gofumpt would reformat:"
+          echo "$files"
+          exit 1
+        fi
 
   test:
     desc: Run unit tests.
