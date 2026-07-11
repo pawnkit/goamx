@@ -98,5 +98,5 @@ func parseHeader(data []byte) (header, error) {
 func supportedVersion(h header) bool {
 	fileVersionOK := h.FileVersion >= minFileVersion && h.FileVersion <= maxFileVersion
 	amxVersionOK := h.AMXVersion >= minFileVersion
-	return fileVersionOK && amxVersionOK && (h.FileVersion != 9 || h.AMXVersion != 9)
+	return fileVersionOK && amxVersionOK
 }

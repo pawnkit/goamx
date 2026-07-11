@@ -67,6 +67,14 @@ func TestLoadBytesAllowsCompactFlag(t *testing.T) {
 	}
 }
 
+func TestLoadBytesSupportsVersionNine(t *testing.T) {
+	data := minimalAMX(t)
+	data[6], data[7] = 9, 9
+	if _, err := LoadBytes("version-nine.amx", data); err != nil {
+		t.Fatal(err)
+	}
+}
+
 func TestLoadBytesSupportsLegacyInlineNames(t *testing.T) {
 	const header = 56
 	publics, natives := uint32(header), uint32(header+24)
