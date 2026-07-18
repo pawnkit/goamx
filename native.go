@@ -28,7 +28,7 @@ func (r *Runtime) RegisterNative(name string, fn NativeFunc) error {
 			_ = r.emit(InstrumentationEvent{Kind: EventException, Name: name, Err: err})
 			return vm.Cell(value), err
 		}
-		if err := r.emit(InstrumentationEvent{Kind: EventNativeExit, Name: name, Result: Cell(value)}); err != nil {
+		if err := r.emit(InstrumentationEvent{Kind: EventNativeExit, Name: name, Result: value}); err != nil {
 			return 0, err
 		}
 		return vm.Cell(value), nil
