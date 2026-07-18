@@ -192,3 +192,28 @@ func TestRuntimeInstructionLimitAndFloatCells(t *testing.T) {
 	}
 	runtime.SetInstructionLimit(0)
 }
+
+func TestRuntimePauseAndContinue(t *testing.T) {
+	runtime, err := LoadBytes("pause.amx", publicTestAMX(vm.OP_CONST_PRI, 42, vm.OP_HALT, 0))
+	if err != nil {
+		t.Fatal(err)
+	}
+	paused := false
+	runtime.SetDebugHook(func(event DebugEvent) error {
+		if !paused {
+			paused = true
+			return ErrExecutionPaused
+		}
+		return nil
+	})
+	if _, err := runtime.ExecPublic(0); !errors.Is(err, ErrExecutionPaused) {
+		t.Fatalf("pause error = %v", err)
+	}
+	if !runtime.Suspended() || runtime.State().CIP != 0 {
+		t.Fatalf("state = %+v", runtime.State())
+	}
+	value, err := runtime.Continue()
+	if err != nil || value != 42 {
+		t.Fatalf("Continue() = %d, %v", value, err)
+	}
+}

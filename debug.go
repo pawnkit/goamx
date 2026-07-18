@@ -1,5 +1,7 @@
 package amx
 
+import "github.com/pawnkit/goamx/vm"
+
 const (
 	SymbolVariable  uint8 = 1
 	SymbolReference uint8 = 2
@@ -55,6 +57,11 @@ type DebugAutomaton struct {
 type DebugState struct {
 	ID, Automaton int16
 	Name          string
+}
+
+// DebugLocation resolves an instruction address to available source metadata.
+func (r *Runtime) DebugLocation(address Cell) (file string, line int, function string, ok bool) {
+	return r.vm.DebugLocation(vm.Cell(address))
 }
 
 func (r *Runtime) DebugInfo() DebugInfo {

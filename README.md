@@ -15,7 +15,7 @@ lower-level virtual machine for bytecode tooling and advanced embedding.
 go get github.com/pawnkit/goamx
 ```
 
-## Root Package Example
+## Root package example
 
 ```go
 package main
@@ -47,7 +47,7 @@ func main() {
 }
 ```
 
-## Low-Level VM Example
+## Low-level VM example
 
 ```go
 package main
@@ -80,7 +80,14 @@ task check
 task lint
 ```
 
+Run `go test -race ./...` before changing runtime state, hooks, or native dispatch. See the [compatibility policy](docs/compatibility.md) for supported AMX images.
+
 The public API is split into two packages:
 
 - `github.com/pawnkit/goamx`: ergonomic runtime API for hosts.
 - `github.com/pawnkit/goamx/vm`: lower-level VM, loader, decoder, and memory API.
+
+## Contributing
+
+This is community tooling built in spare time. Bug reports, small fixes, and
+AMX compatibility fixtures are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md).

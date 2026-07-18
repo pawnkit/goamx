@@ -38,6 +38,9 @@ type State struct {
 
 func (vm *VM) SetDebugHook(hook func(Instruction, State) error) { vm.debugHook = hook }
 func (vm *VM) DebugInfo() DebugInfo                             { return vm.debug }
+func (vm *VM) State() State {
+	return State{PRI: vm.pri, ALT: vm.alt, HEA: vm.hea, STK: vm.stk, STP: vm.stp, FRM: vm.frm, CIP: vm.resumeCIP}
+}
 func (vm *VM) SetInstructionLimit(limit int) {
 	if limit <= 0 {
 		vm.maxSteps = maxExecSteps

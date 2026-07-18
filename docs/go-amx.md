@@ -1,4 +1,4 @@
-# Pure-Go AMX Runtime
+# Pure-Go AMX runtime
 
 `goamx` is a reusable, cgo-free AMX loader and interpreter. The public package
 does not depend on a Pawn compiler, a server process, or any application-level
@@ -52,7 +52,7 @@ The public API exposes:
 - runtime cloning, execution reset, and complete data-memory reset
 - host user data keyed by an integer tag
 
-## Package Layout
+## Package layout
 
 Application code should usually import `github.com/pawnkit/goamx` and use
 the root package. It provides typed cells, native callbacks, string/memory

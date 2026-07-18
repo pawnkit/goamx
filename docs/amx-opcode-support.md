@@ -1,4 +1,4 @@
-# AMX Opcode Support
+# AMX opcode support
 
 This table tracks pure-Go AMX runtime coverage. Decode support means the bytecode
 walker can size and name the instruction. Execute support means the interpreter

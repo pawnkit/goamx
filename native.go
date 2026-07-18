@@ -16,12 +16,22 @@ func (r *Runtime) RegisterNative(name string, fn NativeFunc) error {
 		return ErrNativeNotDeclared
 	}
 	return r.vm.RegisterNative(name, func(ctx vm.NativeContext, params []vm.Cell) (vm.Cell, error) {
+		if err := r.emit(InstrumentationEvent{Kind: EventNativeEnter, Name: name}); err != nil {
+			return 0, err
+		}
 		machine, ok := ctx.(*vm.VM)
 		if !ok {
 			return 0, errors.New("native context is not a Go AMX runtime")
 		}
 		value, err := fn(runtimeContext{vm: machine}, publicCells(params))
-		return vm.Cell(value), err
+		if err != nil {
+			_ = r.emit(InstrumentationEvent{Kind: EventException, Name: name, Err: err})
+			return vm.Cell(value), err
+		}
+		if err := r.emit(InstrumentationEvent{Kind: EventNativeExit, Name: name, Result: Cell(value)}); err != nil {
+			return 0, err
+		}
+		return vm.Cell(value), nil
 	})
 }
 

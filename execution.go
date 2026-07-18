@@ -7,9 +7,22 @@ import (
 )
 
 func (r *Runtime) ExecPublic(index int, args ...Cell) (Cell, error) {
+	publics, _ := r.Publics()
+	name := ""
+	if index >= 0 && index < len(publics) {
+		name = publics[index].Name
+	}
+	if err := r.emit(InstrumentationEvent{Kind: EventPublicEnter, Name: name}); err != nil {
+		return 0, err
+	}
 	ret, err := r.vm.ExecPublic(index, vmCells(args)...)
 	if err != nil {
-		return Cell(ret), translateError(err)
+		err = translateError(err)
+		_ = r.emit(InstrumentationEvent{Kind: EventException, Name: name, Err: err})
+		return Cell(ret), err
+	}
+	if err := r.emit(InstrumentationEvent{Kind: EventPublicExit, Name: name, Result: Cell(ret)}); err != nil {
+		return 0, err
 	}
 	return Cell(ret), nil
 }

@@ -10,6 +10,7 @@ var (
 	ErrInvalidMemoryAccess   = errors.New("invalid AMX memory access")
 	ErrInvalidInstruction    = errors.New("invalid AMX instruction")
 	ErrNotSleeping           = errors.New("AMX runtime is not sleeping")
+	ErrExecutionPaused       = errors.New("AMX execution paused")
 )
 
 type RuntimeErrorCode string

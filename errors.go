@@ -10,6 +10,7 @@ var (
 	ErrInvalidMemoryAccess   = vm.ErrInvalidMemoryAccess
 	ErrInvalidInstruction    = vm.ErrInvalidInstruction
 	ErrNotSleeping           = vm.ErrNotSleeping
+	ErrExecutionPaused       = vm.ErrExecutionPaused
 )
 
 type RuntimeErrorCode string

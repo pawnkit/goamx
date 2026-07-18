@@ -39,6 +39,10 @@ func (vm *VM) execLoop(cip int) (Cell, error) {
 		if vm.debugHook != nil {
 			state := State{PRI: vm.pri, ALT: vm.alt, HEA: vm.hea, STK: vm.stk, STP: vm.stp, FRM: vm.frm, CIP: cip}
 			if err := vm.debugHook(ins, state); err != nil {
+				if errors.Is(err, ErrExecutionPaused) {
+					vm.suspended = true
+					vm.resumeCIP = cip
+				}
 				return 0, err
 			}
 		}

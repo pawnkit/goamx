@@ -1,20 +1,9 @@
 # Compatibility
 
-The runtime targets AMX images produced by the modern open.mp Pawn compiler with
-32-bit cells. It rejects non-32-bit images and obsolete direct-native execution
-paths explicitly.
+The runtime loads 32-bit AMX images produced by the modern open.mp Pawn compiler. Non-32-bit images and obsolete direct-native execution paths are rejected.
 
-Compatibility is currently guarded by unit tests that construct focused AMX
-images for loader behavior, metadata tables, memory operations, compact
-encoding, sleep/continuation, native dispatch, opcode decoding, and opcode
-execution.
+Focused fixtures cover headers, metadata, memory, compact encoding, suspended execution, native dispatch, decoding, and opcode execution. The [opcode table](amx-opcode-support.md) records the current interpreter coverage.
 
-Useful future additions for this standalone repository:
+## Gaps
 
-- checked-in compiled AMX fixtures generated from representative Pawn source
-- a small source corpus derived from the upstream open.mp compiler tests
-- an optional parity harness against the canonical C AMX runtime
-- CI that regenerates or verifies fixtures with a pinned compiler version
-
-Those additions should remain development-time checks only; the library itself
-is intended to stay pure Go and cgo-free.
+The repository still needs a larger set of checked-in programs compiled from representative Pawn source and an optional parity harness against the canonical C runtime. Any generated fixture should pin its compiler version and remain a development dependency; the Go library itself stays free of cgo.

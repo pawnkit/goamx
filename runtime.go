@@ -9,6 +9,7 @@ import (
 type Runtime struct {
 	vm       *vm.VM
 	userData map[int64]any
+	hook     InstrumentationHook
 }
 
 // VM returns the underlying low-level virtual machine.
@@ -37,6 +38,9 @@ func (r *Runtime) MemoryInfo() MemoryInfo {
 	info := r.Info()
 	return MemoryInfo{CodeBytes: info.CodeSize, DataBytes: info.DataSize, StackHeapBytes: info.StackHeapSize}
 }
+
+// State returns the current registers, including the stopped instruction.
+func (r *Runtime) State() State { return publicState(r.vm.State()) }
 
 // SetInstructionLimit sets the maximum instructions for one execution call.
 // Values less than one restore the default limit.

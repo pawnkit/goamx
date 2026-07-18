@@ -1,4 +1,8 @@
-# AMX Runtime
+# AMX runtime
+
+## Instrumentation
+
+`SetInstrumentationHook` emits instruction, public, native, and exception events. Hooks are synchronous and can stop execution by returning an error. The instruction path performs no event work when instrumentation is disabled.
 
 The pure-Go AMX runtime currently loads AMX headers, publics, natives, data
 memory, and code segments. Compact-encoded AMX code/data blocks are expanded at
